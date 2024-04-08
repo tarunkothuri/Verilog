@@ -1,0 +1,28 @@
+module shift_reg (clk,rst,si,so,shft);
+parameter N = 4;
+input clk,rst,si,shft;
+output reg so;
+  reg [N-1:0] temp;
+
+always@(posedge clk) begin
+  if(!rst)
+    temp <= 0;
+  else begin
+    case(shft)
+      1'b0: begin
+        temp <= {temp[N-2:0],si};
+        so <= temp[N-1];
+      end
+      1'b1: begin 
+        temp <= {si,temp[N-1:1]};
+        so <= temp[0];
+      end
+      default: begin
+        temp <= temp;
+        so <= 1'bX;
+      end
+    endcase
+  end
+  
+end
+endmodule
